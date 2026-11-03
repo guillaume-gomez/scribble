@@ -2,7 +2,9 @@ import ThreeJsRenderer from "./components/threeJs/ThreeJsRenderer";
 
 function App() {
   return (
-    <ThreeJsRenderer />
+    <div style={{ width: 800, height:800 }}>
+      <ThreeJsRenderer />
+    </div>
   )
 }
 

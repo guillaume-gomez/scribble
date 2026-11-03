@@ -2,10 +2,12 @@ import { useRef, Suspense, useEffect, useState } from 'react';
 import { useFullscreen } from "rooks";
 import { Group } from "three";
 import { Canvas } from '@react-three/fiber';
-import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, Gltf, Text } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, Gltf, Text, CameraControls } from '@react-three/drei';
 import FallBackLoader from "./FallBackLoader";
 
-const AnimatedGltf = animated(Gltf);
+import { SketchMaterial } from './sketch/SketchMaterial';
+import { SketchOutline } from './sketch/SketchOutline';
+import { SketchShadow } from './sketch/SketchShadow';
 
 const { BASE_URL, MODE } = import.meta.env;
 
@@ -35,19 +37,30 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
           onDoubleClick={() => {
             toggleFullscreen();
           }}
+          shadows
+          flat
         >
           { import.meta.env.MODE === "development" ? <Stats/> : <></> }
           <ambientLight intensity={1.0} />
           <Suspense fallback={<FallBackLoader/>}>
             <Stage adjustCamera={false} intensity={1} shadows="contact" environment="city">
-               <Suspense fallback={<FallBackLoader/>}>
+              <directionalLight castShadow position={[-5, 8, 4.5]} />
+
                 <group ref={groupRef}>
+
+                  <mesh castShadow>
+                    <boxGeometry />
+                    <SketchMaterial color="#101A91" density={22} pressure={0.7} />
+                    <SketchOutline color="#101A91" width={1.7} />
+                  </mesh>
+
                 </group>
-              </Suspense>
+
 
               { MODE === "development" &&
                 <Grid args={[60, 60]} position={[0,0,0]} cellColor='white' />
               }
+              <SketchShadow />
             </Stage>
           </Suspense>
           { MODE === "development" &&
@@ -55,6 +68,7 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
               <GizmoViewport labelColor="white" axisHeadScale={1} />
             </GizmoHelper>
           }
+          <CameraControls />
         </Canvas>
       </div>
     </div>
