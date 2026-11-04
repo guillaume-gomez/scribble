@@ -16,14 +16,14 @@ interface ThreeJsRendererProps {
 }
 
 
-
 function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const {
     toggleFullscreen,
   } = useFullscreen({ target: canvasContainerRef });
   const groupRef = useRef<Group|null>(null);
-
+  const [sketchColor, setSketchColor] = useState<string>("#101A91");
+  const [outlineColor, setOutlineColor] = useState<string>("#FF1A91");
 
   return (
     <div className="flex flex-col gap-5 w-full h-full">
@@ -50,8 +50,8 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
 
                   <mesh castShadow>
                     <boxGeometry />
-                    <SketchMaterial color="#101A91" density={22} pressure={0.7} />
-                    <SketchOutline color="#101A91" width={1.7} />
+                    <SketchMaterial color={sketchColor} density={22} pressure={0.7} />
+                    <SketchOutline color={outlineColor} width={1.7} />
                   </mesh>
 
                 </group>
