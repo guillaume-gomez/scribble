@@ -1,20 +1,20 @@
 import { useRef, Suspense, useEffect, useState } from 'react';
 import { useFullscreen } from "rooks";
-import { Group } from "three";
+import { Group, MathUtils } from "three";
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, Gltf, Text, CameraControls } from '@react-three/drei';
 import FallBackLoader from "./FallBackLoader";
 
-import { SketchMaterial } from './sketch/SketchMaterial';
+import { SketchMaterial, INK, PAPER } from './sketch/SketchMaterial';
 import { SketchOutline } from './sketch/SketchOutline';
 import { SketchShadow } from './sketch/SketchShadow';
+import { PaperPlane } from './sketch/PaperPlane';
 
 const { BASE_URL, MODE } = import.meta.env;
 
 
 interface ThreeJsRendererProps {
 }
-
 
 function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -48,13 +48,37 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
 
                 <group ref={groupRef}>
 
-                  <mesh castShadow>
+                  <mesh
+                    castShadow
+                    position={[0, 1.5, 0]}
+                  >
                     <boxGeometry />
                     <SketchMaterial color={sketchColor} density={22} pressure={0.7} />
                     <SketchOutline color={outlineColor} width={1.7} />
                   </mesh>
 
+
+                  <mesh
+                    castShadow
+                    position={[1.5, 1.75, 2]}
+                  >
+                    <sphereGeometry />
+                    <SketchMaterial color={sketchColor} density={22} pressure={0.7} />
+                    <SketchOutline color={outlineColor} width={1.7} />
+                  </mesh>
+
                 </group>
+
+                <PaperPlane
+                  y={-0.05}
+                  tint={PAPER}
+                  strength={1}
+                  contrast={1}
+                  repeat={1}
+                  rotation={MathUtils.degToRad(0)}
+                  size={12}
+                  fade={0.35}
+                />
 
 
               { MODE === "development" &&
