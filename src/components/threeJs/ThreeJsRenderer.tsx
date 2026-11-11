@@ -8,6 +8,7 @@ import FallBackLoader from "./FallBackLoader";
 import { SketchMaterial, INK, PAPER } from './sketch/SketchMaterial';
 import { SketchOutline } from './sketch/SketchOutline';
 import { SketchShadow } from './sketch/SketchShadow';
+import SketchModel from "./sketch/SketchModel";
 import { PaperPlane } from './sketch/PaperPlane';
 
 const { BASE_URL, MODE } = import.meta.env;
@@ -67,6 +68,40 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
                     <SketchOutline color={outlineColor} width={1.7} />
                   </mesh>
 
+                  <Gltf 
+                    castShadow
+                    src={`${BASE_URL}White Eraser by Jarlan Perez - fzDp9g3m6bm.glb`}
+                    scale={10}
+                    position={[2, 2, 0]}
+                    rotation={[ 0, 0, 0]}
+                  >
+                  </Gltf>
+ 
+                  <SketchModel
+                    url={`${BASE_URL}White Eraser by Jarlan Perez - fzDp9g3m6bm.glb`}
+                    scale={10}
+                    position={[5, 2, 0]}
+                    material={<SketchMaterial color={sketchColor} density={22} pressure={0.7} />}
+                    outline={<SketchOutline color={outlineColor} width={1.7} />}
+                  />
+
+                  <Gltf 
+                    castShadow
+                    src={`${BASE_URL}alice_v2_robe_noire.glb`}
+                    scale={5}
+                    position={[2, 5, 0]}
+                    rotation={[ 0, 0, 0]}
+                  >
+                  </Gltf>
+
+                  <SketchModel
+                    url={`${BASE_URL}alice_v2_robe_noire.glb`}
+                    scale={5}
+                    position={[8, 2, 0]}
+                    material={<SketchMaterial color={sketchColor} density={22} pressure={0.7} />}
+                    outline={<SketchOutline color={outlineColor} width={0.5} />}
+                  />
+
                 </group>
 
                 <PaperPlane
@@ -76,7 +111,7 @@ function ThreejsRenderer({} : ThreeJsRendererProps ): React.ReactElement {
                   contrast={1}
                   repeat={1}
                   rotation={MathUtils.degToRad(0)}
-                  size={12}
+                  size={20}
                   fade={0.35}
                 />
 
